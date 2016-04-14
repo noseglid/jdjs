@@ -1,5 +1,5 @@
 {
-  "name": "java-decompiler",
+  "name": "jdjs",
   "version": "0.0.1",
   "description": "Java decompiler",
   "main": "index.js",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/noseglid/java-decompiler.git"
+    "url": "git+https://github.com/noseglid/jdjs.git"
   },
   "keywords": [
     "java",
@@ -28,9 +28,9 @@
   "author": "Alexander Olsson <noseglid@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/noseglid/java-decompiler/issues"
+    "url": "https://github.com/noseglid/jdjs/issues"
   },
-  "homepage": "https://github.com/noseglid/java-decompiler#readme",
+  "homepage": "https://github.com/noseglid/jdjs#readme",
   "devDependencies": {
     "eslint": "^2.7.0",
     "eslint-config-atom-build": "^3.0.0"
