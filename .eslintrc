@@ -1,0 +1,6 @@
+{
+  "extends": "atom-build",
+  "rules": {
+    "strict": [ 2, "global" ]
+  }
+}

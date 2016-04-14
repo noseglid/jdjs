@@ -1,0 +1,38 @@
+{
+  "name": "java-decompiler",
+  "version": "0.0.1",
+  "description": "Java decompiler",
+  "main": "index.js",
+  "dependencies": {
+    "bignum": "^0.11.0",
+    "bluebird": "^3.0.2",
+    "commander": "^2.9.0"
+  },
+  "scripts": {
+    "test": "eslint access-flags reader refiner printer util"
+  },
+  "bin": {
+    "jdjs": "cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/noseglid/java-decompiler.git"
+  },
+  "keywords": [
+    "java",
+    "decompiler"
+  ],
+  "engines": {
+    "node": "^5.0.0"
+  },
+  "author": "Alexander Olsson <noseglid@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/noseglid/java-decompiler/issues"
+  },
+  "homepage": "https://github.com/noseglid/java-decompiler#readme",
+  "devDependencies": {
+    "eslint": "^2.7.0",
+    "eslint-config-atom-build": "^3.0.0"
+  }
+}
