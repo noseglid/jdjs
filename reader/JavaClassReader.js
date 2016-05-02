@@ -1,8 +1,5 @@
 'use strict';
 
-const fs = require('fs');
-const bluebird = require('bluebird');
-const readFile = bluebird.promisify(fs.readFile);
 const constantPoolInfo = require('./constant-pool-info');
 const fieldInfo = require('./field-info');
 const attributeInfo = require('./attribute-info');
@@ -10,16 +7,22 @@ const methodInfo = require('./method-info');
 
 module.exports = class JavaClassReader {
 
-  constructor(file) {
-    this.file = file;
+  constructor(stream) {
+    this.stream = stream;
     this.buffer = null;
     this.pos = -1;
   }
 
-  open() {
-    return readFile(this.file).then((buf) => {
-      this.buffer = buf;
-      this.pos = 0;
+  initialize() {
+    const buffers = [];
+    return new Promise((resolve, reject) => {
+      this.stream.on('data', buffer => buffers.push(buffer));
+      this.stream.on('error', reject);
+      this.stream.on('end', () => {
+        this.buffer = Buffer.concat(buffers);
+        this.pos = 0;
+        resolve(this);
+      });
     });
   }
 

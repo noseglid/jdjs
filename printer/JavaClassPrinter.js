@@ -15,6 +15,7 @@ module.exports = class JavaClassPrinter {
     this.indent();
 
     this.fields(refined);
+    this.methods(refined);
 
     this.outdent();
     this.finalize();
@@ -32,7 +33,7 @@ module.exports = class JavaClassPrinter {
   }
 
   fields(refined) {
-    refined.fields.forEach((field) => {
+    refined.fields.forEach(field => {
       const parts = field.modifiers.concat([
         field.type,
         field.name
@@ -40,6 +41,27 @@ module.exports = class JavaClassPrinter {
 
       this.append(parts.join(' '));
       this.append(';');
+      this.newLine();
+    });
+  }
+
+  methods(refined) {
+    refined.methods.forEach(method => {
+      const parts = [ ...method.modifiers ];
+      if (method.returnValue) {
+        parts.push(method.returnValue);
+      }
+      if (method.name === '<init>') {
+        parts.push(refined.name);
+      } else {
+        parts.push(method.signature.returnValue, method.name);
+      }
+
+      this.append(parts.join(' '));
+
+      this.append('(');
+      this.append(method.signature.arguments.join(', '));
+      this.append(');');
       this.newLine();
     });
   }

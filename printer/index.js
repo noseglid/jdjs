@@ -2,13 +2,15 @@
 
 const JavaClassPrinter = require('./JavaClassPrinter');
 
-module.exports = (opts, refined) => {
+module.exports = (refined, opts) => {
   if (opts.json) {
     process.stdout.write(JSON.stringify(refined));
     return;
   }
 
-  const printer = new JavaClassPrinter();
-  printer.build(refined);
-  printer.output();
+  refined.forEach(ref => {
+    const printer = new JavaClassPrinter();
+    printer.build(ref);
+    printer.output();
+  });
 };

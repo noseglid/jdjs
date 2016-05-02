@@ -1,5 +1,8 @@
 'use strict';
 
+const fs = require('fs');
+const bluebird = require('bluebird');
+const yauzl = bluebird.promisify(require('yauzl').open);
 const JavaClassReader = require('./JavaClassReader');
 
 function processClassFile(reader) {
@@ -47,7 +50,36 @@ function processClassFile(reader) {
   return cl;
 }
 
-module.exports = function (classFile) {
-  const reader = new JavaClassReader(classFile);
-  return reader.open().then(processClassFile.bind(null, reader));
+const klass = (inputFile) => {
+  const stream = fs.createReadStream(inputFile);
+  const reader = new JavaClassReader(stream);
+  return reader.initialize().then(() => [ processClassFile(reader) ]);
+};
+
+const jar = (inputFile) => {
+  return yauzl(inputFile).then(zip => new Promise((resolve, reject) => {
+    const promises = [];
+    zip = bluebird.promisifyAll(zip);
+    zip.on('entry', entry => {
+      if (!entry.fileName.endsWith('.class')) {
+        return;
+      }
+
+      promises.push(zip.openReadStreamAsync(entry)
+        .then(stream => new JavaClassReader(stream))
+        .then(reader => reader.initialize())
+        .then(reader => processClassFile(reader))
+        .catch(reject));
+    });
+
+    zip.on('end', () => {
+      Promise.all(promises)
+        .then(resolve)
+        .catch(reject);
+    });
+  }));
+};
+
+module.exports = (inputFile) => {
+  return (inputFile.endsWith('.class') ? klass : jar)(inputFile);
 };

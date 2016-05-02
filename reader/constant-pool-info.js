@@ -17,6 +17,13 @@ function integer(reader) {
   };
 }
 
+function float(reader) {
+  return {
+    type: 'Float',
+    bytes: reader.read(4)
+  };
+}
+
 function longDouble(type, reader) {
   return {
     type: type,
@@ -63,6 +70,7 @@ module.exports = function (reader) {
   switch (tag) {
     case 1: return utf8(reader);
     case 3: return integer(reader);
+    case 4: return float(reader);
     case 5: return longDouble('Long', reader);
     case 6: return longDouble('Double', reader);
     case 7: return klass(reader);
