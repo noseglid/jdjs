@@ -64,6 +64,29 @@ function nameAndType(reader) {
   };
 }
 
+function invokeDynamic(reader) {
+  return {
+    type: 'InvokeDynamic',
+    bootstrapMethodAttrIndex: reader.read(2),
+    nameAndTypeIndex: reader.read(2)
+  };
+}
+
+function methodHandle(reader) {
+  return {
+    type: 'MethodHandle',
+    referenceKind: reader.read(1),
+    referenceIndex: reader.read(2)
+  };
+}
+
+function methodType(reader) {
+  return {
+    type: 'MethodType',
+    descriptorIndex: reader.read(2)
+  };
+}
+
 module.exports = function (reader) {
   const tag = reader.read(1);
 
@@ -79,6 +102,9 @@ module.exports = function (reader) {
     case 10: return ref('MethodRef', reader);
     case 11: return ref('InterfaceMethodRef', reader);
     case 12: return nameAndType(reader);
+    case 15: return methodHandle(reader);
+    case 16: return methodType(reader);
+    case 18: return invokeDynamic(reader);
     default: throw new Error('Invalid constant pool info tag: <' + tag + '>');
   }
 };
