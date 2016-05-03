@@ -24,11 +24,16 @@ module.exports = class JavaClassPrinter {
   declaration(refined) {
     const parts = refined.modifiers.concat([
       'class',
-      refined.name,
-      'extends',
-      refined.super,
-      '{'
+      refined.name
     ]);
+    if (refined.super) {
+      parts.push(...[
+        'extends',
+        refined.super
+      ]);
+    }
+    parts.push('{');
+
     this.append(parts.join(' '));
   }
 

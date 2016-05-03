@@ -14,7 +14,7 @@ class Refiner {
     return {
       modifiers: util.modifiers(this.cl.accessFlags, accessFlags.class),
       name: this.constantPool.extractValue(this.cl.thisClass),
-      super: this.constantPool.extractValue(this.cl.superClass)
+      super: 0 !== this.cl.superClass ? this.constantPool.extractValue(this.cl.superClass) : null
     };
   }
 
