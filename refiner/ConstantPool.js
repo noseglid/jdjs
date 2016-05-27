@@ -1,6 +1,5 @@
 'use strict';
 
-const bignum = require('bignum');
 const util = require('../util');
 
 module.exports = class ConstantPool {
@@ -20,12 +19,8 @@ module.exports = class ConstantPool {
       case 'Integer': return entry.value;
       case 'String': return this.get(entry.stringIndex).value;
       case 'Long':
-        // high and low seperately as strings since javascript can't
-        // represent 64 bit longs with full precision
-        let num = bignum(entry.highBytes.toString());
-        num = num.shiftLeft(32);
-        num = num.or(bignum(entry.lowBytes.toString()));
-        return num.toString();
+        // TODO: This will loose precision with numbers greater than 2^53
+        return entry.highBytes << 32 + entry.lowBytes;
       default: throw new Error('Invalid value type: ' + entry.type);
     }
   }
